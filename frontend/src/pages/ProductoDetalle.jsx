@@ -12,15 +12,17 @@ const ProductoDetalle = () => {
   useEffect(() => {
     fetch(`http://localhost:3000/productos/${id}`)
       .then(res => res.json())
-      .then(data => {
-        setProducto(data);
-        setLoading(false);
+      if (!res.ok) throw new Error('Producto no encontrado');
+       return res.json();
       })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [id]);
+      .then(data => {
+    setProducto(data);
+    setLoading(false);
+  })
+  .catch(err => {
+    console.error(err);
+    setLoading(false);
+  });
 
   if (loading) return <p>Cargando...</p>;
   if (!producto) return <p>Producto no encontrado</p>;
