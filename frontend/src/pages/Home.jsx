@@ -4,6 +4,7 @@ import ProductoCard from '../components/ProductoCard';
 const Home = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:3000/productos')
@@ -14,11 +15,13 @@ const Home = () => {
       })
       .catch(err => {
         console.error(err);
+        setError('No se pudieron cargar los productos.');
         setLoading(false);
       });
   }, []);
 
   if (loading) return <p>Cargando productos...</p>;
+  if (error) return <p style={{ color: 'red' }}>{error}</p>; 
 
   return (
     <div>
